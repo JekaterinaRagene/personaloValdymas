@@ -46,7 +46,7 @@ if (mysqli_num_rows($result) > 0) {
       $result = mysqli_query($connection, $query);
       $baseSalary = mysqli_fetch_assoc($result);
      //print_r($baseSalary);
-      break;//jeigu nuimti break tada krauna begalybe 
+     break;//jeigu nuimti break tada krauna begalybe 
     }
 }
 
