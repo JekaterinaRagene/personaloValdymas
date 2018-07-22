@@ -25,10 +25,8 @@ if (mysqli_num_rows($result) > 0) {
 //        echo '</pre>';
     $query = "SELECT * FROM pareigos WHERE id = " . $darbuotojas['pareigu_id'];
     $result = mysqli_query($connection, $query);
-    $pareigos = mysqli_fetch_assoc($result);
-    
-   //print_r($pareigos);
-        
+    $pareiguPavadinimas = mysqli_fetch_assoc($result);    
+    //print_r($pareiguPavadinimas);       
     }
     // print_r(mysqli_fetch_assoc($result);
     //print_r(mysqli_fetch_row($result));
@@ -47,7 +45,7 @@ if (mysqli_num_rows($result) > 0) {
       $qury = "SELECT * FROM darbuotojai WHERE pereigu_id =" . $pareiga['base_salary'];
       $result = mysqli_query($connection, $query);
       $baseSalary = mysqli_fetch_assoc($result);
-      print_r($baseSalary);
+     //print_r($baseSalary);
       break;//jeigu nuimti break tada krauna begalybe 
     }
 }
@@ -58,9 +56,9 @@ if(count($darbuotojai) == 0) {
 } else {
     echo '<ol>';
     foreach ($darbuotojai as $darbuotojas) {
-        echo '<li>' . $darbuotojas['name'] . ' ' . $darbuotojas['surname'] . ',' 
-                .'<a href="pareigos.php?id=,  "> pareigos</a> ' . ' - '. $pareigos['name'] . ', '
-                . ' gaunantis bazine alaga:' . $pareiga['base_salary'] . ' Eur' .  ', </li>';
+        echo '<li><a href="darbuotojas.php?id=,  "> Darbuotojas:</a> ' . $darbuotojas['name'] . ' ' . $darbuotojas['surname'] . ',' 
+                .'<a href="pareigos.php?id=,  "> pareigos</a> ' . ' - '. $pareiguPavadinimas['name'] . ', '
+                . ' gaunantis bazine alaga:' . $baseSalary['base_salary'] . ' Eur' .  ', </li>';
         }
         echo '</ol>';
 }
