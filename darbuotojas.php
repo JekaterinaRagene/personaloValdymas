@@ -22,27 +22,17 @@ $darbuotojai = [];
 if (mysqli_num_rows($result) > 0) {
     while ($darbuotojas = mysqli_fetch_assoc($result)){
         $darbuotojai[] = $darbuotojas;
-        $query = "SELECT * FROM pareigos WHERE id = " . $darbuotojas['pareigu_id'];
-        $result = mysqli_query($connection, $query);
-        $pareiguPavadinimas = mysqli_fetch_assoc($result);    
-        //print_r($pareiguPavadinimas);       
+//        echo '<pre>';
+//        print_r($darbuotojas) . '<br>';
+//        echo '</pre>';
+    $query = "SELECT * FROM pareigos WHERE id = " . $darbuotojas['pareigu_id'];
+    $row = mysqli_query($connection, $query);
+    $pareiguPavadinimas = mysqli_fetch_assoc($row); 
+//    echo '<pre>';
+//    print_r($pareiguPavadinimas); 
+//    echo '</pre>';
     }
 } 
-
-$query = "SELECT * FROM pareigos";
-$result = mysqli_query($connection, $query);
-$pareigos = [];
-if (mysqli_num_rows($result) > 0) {
-    while ($pareiga = mysqli_fetch_assoc($result)) {
-        $pareigos[] = $pareiga;
-        $qury = "SELECT * FROM darbuotojai WHERE pereigu_id =" . $pareiga['base_salary'];
-        $result = mysqli_query($connection, $query);
-        $baseSalary = mysqli_fetch_assoc($result);
-       //print_r($baseSalary);
-       break;//jeigu nuimti break tada krauna begalybe 
-    }
-}
-
 if(count($darbuotojai) == 0) {
     echo 'Tokiu darbuotoju nera';
 } else {
@@ -57,7 +47,7 @@ if(count($darbuotojai) == 0) {
             <b>Pareigos: </b> <br /> <?php echo $pareiguPavadinimas['name']; ?>
         </p>
         <p>
-            <b>Mėnesinė alga: </b> <br /><?php echo $baseSalary['base_salary']; ?> EUR
+            <b>Mėnesinė alga: </b> <br /><?php echo $pareiguPavadinimas['base_salary']; ?> EUR
         </p>
     </div>
         <div class="col-md-6">
@@ -70,7 +60,7 @@ if(count($darbuotojai) == 0) {
 
             <table class="table table-hover">
                 <?php 
-                $algaAntPopieriaus = $baseSalary['base_salary'];
+                $algaAntPopieriaus = $pareiguPavadinimas['base_salary'];
                 $npd = $algaAntPopieriaus * 29.8 / 100;
                 $pajamuMokestis = ($algaAntPopieriaus - $npd) * 15 / 100;
                 $sveikatosDraudimas = $algaAntPopieriaus * 6 / 100;

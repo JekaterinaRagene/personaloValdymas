@@ -23,27 +23,17 @@ $darbuotojai = [];
 if (mysqli_num_rows($result) > 0) {
     while ($darbuotojas = mysqli_fetch_assoc($result)){
         $darbuotojai[] = $darbuotojas;
-        $query = "SELECT * FROM pareigos WHERE id = " . $darbuotojas['pareigu_id'];
-        $result = mysqli_query($connection, $query);
-        $pareiguPavadinimas = mysqli_fetch_assoc($result);    
-        //print_r($pareiguPavadinimas);       
+//        echo '<pre>';
+//        print_r($darbuotojas) . '<br>';
+//        echo '</pre>';
+    $query = "SELECT * FROM pareigos WHERE id = " . $darbuotojas['pareigu_id'];
+    $row = mysqli_query($connection, $query);
+    $pareiguPavadinimas = mysqli_fetch_assoc($row); 
+//    echo '<pre>';
+//    print_r($pareiguPavadinimas); 
+//    echo '</pre>';
     }
 } 
-
-$query = "SELECT * FROM pareigos";
-$result = mysqli_query($connection, $query);
-$pareigos = [];
-if (mysqli_num_rows($result) > 0) {
-    while ($pareiga = mysqli_fetch_assoc($result)) {
-        $pareigos[] = $pareiga;
-        $qury = "SELECT * FROM darbuotojai WHERE pereigu_id =" . $pareiga['base_salary'];
-        $result = mysqli_query($connection, $query);
-        $baseSalary = mysqli_fetch_assoc($result);
-       //print_r($baseSalary);
-       break;//jeigu nuimti break tada krauna begalybe 
-    }
-}
-
 if(count($darbuotojai) == 0) {
     echo 'Tokiu darbuotoju nera';
 } else {
@@ -71,7 +61,7 @@ if(count($darbuotojai) == 0) {
             <td><?php echo $darbuotojas['surname'];?></td>
             <td><?php echo $darbuotojas['phone'];?></td>
             <td><?php echo $darbuotojas['education'];?></td>
-            <td><?php echo $baseSalary['base_salary'];?></td>
+            <td><?php echo $pareiguPavadinimas['base_salary'];?></td>
             <td><a href="darbuotojas.php" class="btn btn-primary">Plačiau</a></td>
         </tr>
     </table>

@@ -24,44 +24,27 @@ if (mysqli_num_rows($result) > 0) {
 //        print_r($darbuotojas) . '<br>';
 //        echo '</pre>';
     $query = "SELECT * FROM pareigos WHERE id = " . $darbuotojas['pareigu_id'];
-    $result = mysqli_query($connection, $query);
-    $pareiguPavadinimas = mysqli_fetch_assoc($result);    
-    //print_r($pareiguPavadinimas);       
-    }
-    // print_r(mysqli_fetch_assoc($result);
-    //print_r(mysqli_fetch_row($result));
-//print_r(mysqli_fetch_array($result));
-} 
-
-$query = "SELECT * FROM pareigos";
-$result = mysqli_query($connection, $query);
-$pareigos = [];
-if (mysqli_num_rows($result) > 0) {
-    while ($pareiga = mysqli_fetch_assoc($result)) {
-        $pareigos[] = $pareiga;
+    $row = mysqli_query($connection, $query);
+    $pareiguPavadinimas = mysqli_fetch_assoc($row);
+//    var_dump($pareiguPavadinimas);
 //    echo '<pre>';
-//    print_r($pareiga);
+//    print_r($pareiguPavadinimas); 
 //    echo '</pre>';
-      $qury = "SELECT * FROM darbuotojai WHERE pereigu_id =" . $pareiga['base_salary'];
-      $result = mysqli_query($connection, $query);
-      $baseSalary = mysqli_fetch_assoc($result);
-     //print_r($baseSalary);
-     break;//jeigu nuimti break tada krauna begalybe 
     }
-}
-
-
+} 
 if(count($darbuotojai) == 0) {
-    echo 'Tokiu darbuotoju nera';
-} else {
-    echo '<ol>';
-    foreach ($darbuotojai as $darbuotojas) {
-        echo '<li><a href="darbuotojas.php?id=,  "> Darbuotojas:</a> ' . $darbuotojas['name'] . ' ' . $darbuotojas['surname'] . ',' 
-                .'<a href="pareigos.php?id=,  "> pareigos</a> ' . ' - '. $pareiguPavadinimas['name'] . ', '
-                . ' gaunantis bazine alaga:' . $baseSalary['base_salary'] . ' Eur' .  ', </li>';
-        }
-        echo '</ol>';
+        echo 'Tokiu darbuotoju nera';
+    } else {
+        echo '<ol>';
+        foreach ($darbuotojai as $darbuotojas) {
+            if ($darbuotojas['pareigu_id'] == $pareiguPavadinimas['id']){
+            echo '<li><a href="darbuotojas.php?id=,  "> Darbuotojas:</a> ' . $darbuotojas['name'] . ' ' . $darbuotojas['surname'] . ',' 
+                    .'<a href="pareigos.php?id=,  "> pareigos</a> ' . ' - '. $pareiguPavadinimas['name'] . ', '
+                    . ' gaunantis bazine alaga:' . $pareiguPavadinimas['base_salary'] . ' Eur' .  ', </li>';
+        }}
+            echo '</ol>';
 }
+
 
 mysqli_close($connection);
 ?>
