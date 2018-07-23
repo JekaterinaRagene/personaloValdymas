@@ -1,11 +1,12 @@
  <?php
+ require 'config.php';
+ 
 $servername = "localhost";
 $username = "root";
 $password = "";
-$database = 'projektas1';
 
 // Create connection
-$connection = mysqli_connect($servername, $username, $password, $database);
+$connection = mysqli_connect($servername, $username, $password, DATABASE);
 //mysqli_ser_charset($connection, 'UTF8');
 mysqli_set_charset($connection, "utf8");
 // Check connection
@@ -18,34 +19,42 @@ $result = mysqli_query($connection, $query);
 
 $darbuotojai = [];
 if (mysqli_num_rows($result) > 0) {
-    while ($darbuotojas = mysqli_fetch_assoc($result)){
+    while ($darbuotojas = mysqli_fetch_assoc($result)) {        
+        $query = "SELECT * FROM pareigos WHERE id = " . $darbuotojas['pareigos_id'];
+        $row = mysqli_query($connection, $query);
+        $pareigos = mysqli_fetch_assoc($row);
+        
+        if (mysqli_num_rows($row) == 0) {
+            $pareigos = [];
+        }        
+        $darbuotojas['pareigos'] = $pareigos;
+        
         $darbuotojai[] = $darbuotojas;
-//        echo '<pre>';
-//        print_r($darbuotojas) . '<br>';
-//        echo '</pre>';
-    $query = "SELECT * FROM pareigos WHERE id = " . $darbuotojas['pareigu_id'];
-    $row = mysqli_query($connection, $query);
-    $pareiguPavadinimas = mysqli_fetch_assoc($row);
-//    var_dump($pareiguPavadinimas);
-//    echo '<pre>';
-//    print_r($pareiguPavadinimas); 
-//    echo '</pre>';
     }
-} 
-if(count($darbuotojai) == 0) {
-        echo 'Tokiu darbuotoju nera';
-    } else {
-        echo '<ol>';
-        foreach ($darbuotojai as $darbuotojas) {
-            if ($darbuotojas['pareigu_id'] == $pareiguPavadinimas['id']){
-            echo '<li><a href="darbuotojas.php?id=,  "> Darbuotojas:</a> ' . $darbuotojas['name'] . ' ' . $darbuotojas['surname'] . ',' 
-                    .'<a href="pareigos.php?id=,  "> pareigos</a> ' . ' - '. $pareiguPavadinimas['name'] . ', '
-                    . ' gaunantis bazine alaga:' . $pareiguPavadinimas['base_salary'] . ' Eur' .  ', </li>';
-        }}
-            echo '</ol>';
 }
 
-
 mysqli_close($connection);
-?>
 
+if(count($darbuotojai) == 0) {
+    echo 'Tokiu darbuotoju nera';
+} else {
+    echo '<ol>';
+    foreach ($darbuotojai as $darbuotojas) {
+        ?>
+        <li>
+            Darbuotojas:
+            <a href="darbuotojas.php?id=<?php echo $darbuotojas['id']; ?>">
+                <?php echo $darbuotojas['name'] . ' ' . $darbuotojas['surname']; ?>
+            </a>
+            <?php if (!empty($darbuotojas['pareigos'])) { ?>
+                pareigos -
+                <a href="pareigos.php?id=<?php echo $darbuotojas['pareigos']['id']; ?>">
+                    <?php echo $darbuotojas['pareigos']['name']; ?>
+                </a>                
+                gaunantis bazine alga: <?php echo $darbuotojas['pareigos']['base_salary']; ?> Eur
+            <?php } ?>
+        </li>
+        <?php
+    }
+    echo '</ol>';
+}
