@@ -5,7 +5,7 @@ menu();
 $servername = "localhost";
 $username = "root";
 $password = "";
-$database = "projektas1";
+$database = "pvs";
 
 // Create connection
 $connection = mysqli_connect($servername, $username, $password, $database);
@@ -62,23 +62,24 @@ if (!$connection) {
         <?php                 
                 $query = "SELECT COUNT(gender) AS lytis,  gender FROM darbuotojai GROUP BY gender";
                 $result = mysqli_query($connection, $query);
-                $lytis = [];  
-                if (mysqli_num_rows($result) > 0) {
-                    while ($lytiesStatistika = mysqli_fetch_assoc($result)) {
-                        $lytis[] = $lytiesStatistika;
-//                        echo '<pre>';
-//                        print_r($lytiesStatistika);
-//                        echo '</pre>';
-                    }
+                $lytis = [];
+                $isVisoDarbuotoju = 0;
+                
                 if (mysqli_num_rows($result) == 0) {
                     echo 'Pasirinkote neegzistuojancius duomenys';
                 }
+                
+                if (mysqli_num_rows($result) > 0) {
+                    while ($lytiesStatistika = mysqli_fetch_assoc($result)) {
+                        $lytis[] = $lytiesStatistika;
+                        $isVisoDarbuotoju += $lytiesStatistika['lytis'];
+                    }
                 }                
                foreach ($lytis as $lytiesStatistika) { ?>
         <tr>
             <td><?php echo $lytiesStatistika['gender'];?></td>
             <td><?php echo $lytiesStatistika['lytis'];?></td>
-            <td><?php echo $lytiesStatistika['lytis'] * 100 / 10; ?> %</td>
+            <td><?php echo round($lytiesStatistika['lytis'] * 100 / $isVisoDarbuotoju, 2); ?> %</td>
         </tr>
                <?php } ?>
         </table>
