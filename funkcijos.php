@@ -35,51 +35,55 @@ function footer()
     <?php
 }
 
-function darbuot()
+function pervedimasIEurus($a)
+{
+  round($a / 100, 2);
+}
+
+function prisijungimas()
 {
     $servername = "localhost";
-$username = "root";
-$password = "";
-$database = 'projektas1';
+    $username = "root";
+    $password = "";
+    $database = "projektas1";
 
-// Create connection
-$connection = mysqli_connect($servername, $username, $password, $database);
-//mysqli_ser_charset($connection, 'UTF8');
-mysqli_set_charset($connection, "utf8");
-// Check connection
-if (!$connection) {
-    die("Connection failed: " . mysqli_connect_error());
-}
-
-$query = "SELECT * FROM darbuotojai";
-$result = mysqli_query($connection, $query);
-
-$darbuotojai = [];
-if (mysqli_num_rows($result) > 0) {
-    while ($darbuotojas = mysqli_fetch_assoc($result)){
-        $darbuotojai[] = $darbuotojas;
-        $query = "SELECT * FROM pareigos WHERE id = " . $darbuotojas['pareigu_id'];
-        $result = mysqli_query($connection, $query);
-        $pareiguPavadinimas = mysqli_fetch_assoc($result);    
-        //print_r($pareiguPavadinimas);       
-    }
-} 
-
-$query = "SELECT * FROM pareigos";
-$result = mysqli_query($connection, $query);
-$pareigos = [];
-if (mysqli_num_rows($result) > 0) {
-    while ($pareiga = mysqli_fetch_assoc($result)) {
-        $pareigos[] = $pareiga;
-        $qury = "SELECT * FROM darbuotojai WHERE pereigu_id =" . $pareiga['base_salary'];
-        $result = mysqli_query($connection, $query);
-        $baseSalary = mysqli_fetch_assoc($result);
-       //print_r($baseSalary);
-       break;//jeigu nuimti break tada krauna begalybe 
+    // Create connection
+    $connection = mysqli_connect($servername, $username, $password, $database);
+    //mysqli_ser_charset($connection, 'UTF8');
+    mysqli_set_charset($connection, "utf8");
+    // Check connection
+    if (!$connection) {
+        die("Connection failed: " . mysqli_connect_error());
     }
 }
 
+function isjungimasDombaze()
+{
+    mysqli_close($connection);
 }
 
+function menu()
+{
+    ?>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+            <div class="navbar-nav">
+                <a class="nav-item nav-link active" href="index.php">
+                   Pagrindinis
+                </a>
+                <a class="nav-item nav-link active" href="darbuotojai_pareigos.php">
+                   Įmonės statistika
+                </a>
+                <a class="nav-item nav-link" href="darbuotojai_statistika.php">
+                    Darbuotojų statistika
+                </a>
+            </div>
+        </div>
+    </nav>
+    <?php
+}
 
 

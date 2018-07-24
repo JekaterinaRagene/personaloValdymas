@@ -1,14 +1,15 @@
 <?php
-require "config.php";
-include "funkcijos.php";
+require 'funkcijos.php';
 head('Darbuotojai pagal pareigas'); 
+menu();
 
 $servername = "localhost";
 $username = "root";
 $password = "";
+$database = "projektas1";
 
 // Create connection
-$connection = mysqli_connect($servername, $username, $password, DATABASE);
+$connection = mysqli_connect($servername, $username, $password, $database);
 //mysqli_ser_charset($connection, 'UTF8');
 mysqli_set_charset($connection, "utf8");
 // Check connection
@@ -27,7 +28,7 @@ $query = "SELECT * FROM pareigos WHERE id = " . $pareiguId;
 $row = mysqli_query($connection, $query);
 $pareigos = mysqli_fetch_assoc($row);
 
-$query = "SELECT * FROM darbuotojai WHERE pareigos_id = " . $pareiguId;
+$query = "SELECT * FROM darbuotojai WHERE pareigu_id = " . $pareiguId;
 $result = mysqli_query($connection, $query);
 
 $darbuotojai = [];

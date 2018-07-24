@@ -1,14 +1,16 @@
 <?php
-require 'config.php';
 require 'funkcijos.php';
+head('Darbuotojai pagal pareigas'); 
+menu();
 
 head('Darbutojo informacija');
 $servername = "localhost";
 $username = "root";
 $password = "";
+$database = "projektas1";
 
 // Create connection
-$connection = mysqli_connect($servername, $username, $password, DATABASE);
+$connection = mysqli_connect($servername, $username, $password, $database);
 //mysqli_ser_charset($connection, 'UTF8');
 mysqli_set_charset($connection, "utf8");
 // Check connection
@@ -33,7 +35,7 @@ if (mysqli_num_rows($result) == 0) {
 
 $darbuotojas = mysqli_fetch_assoc($result);
 
-$query = "SELECT * FROM pareigos WHERE id = " . $darbuotojas['pareigos_id'];
+$query = "SELECT * FROM pareigos WHERE id = " . $darbuotojas['pareigu_id'];
 $row = mysqli_query($connection, $query);
 $pareigos = mysqli_fetch_assoc($row);
 ?>
@@ -65,7 +67,7 @@ $pareigos = mysqli_fetch_assoc($row);
 
     <table class="table table-hover">
         <?php 
-            $algaAntPopieriaus = $pareigos['base_salary'];
+            $algaAntPopieriaus = round($pareigos['base_salary'] / 100, 2);
             $npd = $algaAntPopieriaus * 29.8 / 100;
             $pajamuMokestis = ($algaAntPopieriaus - $npd) * 15 / 100;
             $sveikatosDraudimas = $algaAntPopieriaus * 6 / 100;

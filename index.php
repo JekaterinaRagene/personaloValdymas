@@ -1,12 +1,14 @@
  <?php
- require 'config.php';
- 
+require 'funkcijos.php';
+head('Darbuotojai pagal pareigas'); 
+menu();
 $servername = "localhost";
 $username = "root";
 $password = "";
+$database = "projektas1";
 
 // Create connection
-$connection = mysqli_connect($servername, $username, $password, DATABASE);
+$connection = mysqli_connect($servername, $username, $password, $database);
 //mysqli_ser_charset($connection, 'UTF8');
 mysqli_set_charset($connection, "utf8");
 // Check connection
@@ -20,7 +22,7 @@ $result = mysqli_query($connection, $query);
 $darbuotojai = [];
 if (mysqli_num_rows($result) > 0) {
     while ($darbuotojas = mysqli_fetch_assoc($result)) {        
-        $query = "SELECT * FROM pareigos WHERE id = " . $darbuotojas['pareigos_id'];
+        $query = "SELECT * FROM pareigos WHERE id = " . $darbuotojas['pareigu_id'];
         $row = mysqli_query($connection, $query);
         $pareigos = mysqli_fetch_assoc($row);
         
@@ -58,3 +60,5 @@ if(count($darbuotojai) == 0) {
     }
     echo '</ol>';
 }
+footer();
+?>
