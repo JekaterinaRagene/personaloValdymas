@@ -5,7 +5,7 @@ menu();
 $servername = "localhost";
 $username = "root";
 $password = "";
-$database = "projektas1";
+$database = "pvs";
 
 // Create connection
 $connection = mysqli_connect($servername, $username, $password, $database);
@@ -27,29 +27,28 @@ if (!$connection) {
             <th>Darbuotojų skaičius</th>
             <th></th>
         </tr>
-        <?php 
+        <?php        
         $query = "SELECT * FROM pareigos";
         $result = mysqli_query($connection, $query);
         $pareigos = [];
         if (mysqli_num_rows($result) > 0) {
-            while ($pareiga = mysqli_fetch_assoc($result)) {        
-                $query = "SELECT COUNT(pareigu_id) AS darbuotojuSkaicius, pareigu_id FROM darbuotojai GROUP BY pareigu_id";
-                $row = mysqli_query($connection, $query);
-                $pareig = mysqli_fetch_assoc($row);
-                if (mysqli_num_rows($row) == 0) {
-                    $pareig = [];
-                }        
-                $pareiga['pareig'] = $pareig;
+            while ($pareiga = mysqli_fetch_assoc($result)) {
+                $query = "SELECT COUNT(*) FROM darbuotojai WHERE pareigos_id = " . $pareiga['id'];
+                $result2 = mysqli_query($connection, $query);
+                
+                if (mysqli_num_rows($result2) == 0) {
+                    $pareiga['darbuotojuSkaicius'] = 0;
+                } else {                    
+                    $darbuotojuSkaicius = mysqli_fetch_row($result2);
+                    $pareiga['darbuotojuSkaicius'] = $darbuotojuSkaicius[0];
+                }
 
                 $pareigos[] = $pareiga;
-                  echo '<pre>';
-                  print_r($pareiga);
-                  echo '</pre>';
                 ?>
         <tr>
             <td><?php echo $pareiga['name'] ?></td>
             <td><?php echo round($pareiga['base_salary'] /100, 2); ?> Eur</td>
-            <td><?php echo ($pareiga['pareig']['pareigu_id']) ?></td>
+            <td><?php echo ($pareiga['darbuotojuSkaicius']) ?></td>
             <td><a href="#" class="btn btn-primary">Rodyti darbuotojus</a></td>
         </tr>
         
