@@ -5,7 +5,7 @@ menu();
 $servername = "localhost";
 $username = "root";
 $password = "";
-$database = "pvs";
+$database = "projektas1";
 
 // Create connection
 $connection = mysqli_connect($servername, $username, $password, $database);
@@ -84,3 +84,6 @@ if (!$connection) {
                <?php } ?>
         </table>
 </div>
+<?php
+footer();
+?>

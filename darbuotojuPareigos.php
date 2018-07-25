@@ -1,11 +1,9 @@
 <?php
-require 'funkcijos.php';
-head('Įmonės statistika'); 
-menu();
+
 $servername = "localhost";
 $username = "root";
 $password = "";
-$database = "pvs";
+$database = "projektas1";
 
 // Create connection
 $connection = mysqli_connect($servername, $username, $password, $database);
@@ -15,6 +13,14 @@ mysqli_set_charset($connection, "utf8");
 if (!$connection) {
     die("Connection failed: " . mysqli_connect_error());
 } 
+
+if (isset($_POST['delete']) && isset($_POST['id'])) {
+    $id = mysqli_real_escape_string($connection, $_POST['id']);
+    //$id = $_POST['id'];
+    $query = "DELETE FROM pareigos WHERE id = '$id'";
+    var_dump($query);die;
+    $result = mysqli_query($connection, $query);
+}
 ?>
 
 <div class="col-md-6">
@@ -33,7 +39,7 @@ if (!$connection) {
         $pareigos = [];
         if (mysqli_num_rows($result) > 0) {
             while ($pareiga = mysqli_fetch_assoc($result)) {
-                $query = "SELECT COUNT(*) FROM darbuotojai WHERE pareigos_id = " . $pareiga['id'];
+                $query = "SELECT COUNT(*) FROM darbuotojai WHERE pareigu_id = " . $pareiga['id'];
                 $result2 = mysqli_query($connection, $query);
                 
                 if (mysqli_num_rows($result2) == 0) {
@@ -49,7 +55,13 @@ if (!$connection) {
             <td><?php echo $pareiga['name'] ?></td>
             <td><?php echo round($pareiga['base_salary'] /100, 2); ?> Eur</td>
             <td><?php echo ($pareiga['darbuotojuSkaicius']) ?></td>
-            <td><a href="#" class="btn btn-primary">Rodyti darbuotojus</a></td>
+            <td><a href="darbuotojas.php?id="<?php echo $pareiga['id'];?> class="btn btn-primary">Rodyti darbuotojus</a></td>
+            <td><a href="pareigos_redaguoti.php?id="<?php echo $pareiga['id'] ?> class="btn btn-warning">Redaguoti</a></td>
+            <td><form method="post">
+            <input type="hidden" name="id" value="<?php echo $pareiga['name'];?>">
+            <input type="submit" class="btn btn-danger" value="Trinti" name="delete">
+                </form>
+            </td>
         </tr>
         
         <?php 
@@ -59,4 +71,3 @@ if (!$connection) {
     </table>
 </div>
 
-<?php footer(); ?>

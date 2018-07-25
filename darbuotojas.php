@@ -3,7 +3,6 @@ require 'funkcijos.php';
 head('Darbuotojai pagal pareigas'); 
 menu();
 
-head('Darbutojo informacija');
 $servername = "localhost";
 $username = "root";
 $password = "";

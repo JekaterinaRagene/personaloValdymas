@@ -80,6 +80,18 @@ function menu()
                 <a class="nav-item nav-link" href="darbuotojai_statistika.php">
                     Darbuotojų statistika
                 </a>
+                <a class="nav-item nav-link" href="darbuotojas_prideti.php">
+                    Pridėti nauja darbuotoją
+                </a>
+                <a class="nav-item nav-link" href="darbuotojas_redaguoti.php">
+                    Redaguoti esamą darbuotoją
+                </a>
+                <a class="nav-item nav-link" href="pareigos_prideti.php">
+                    Pridėti naują pareigą
+                </a>
+                <a class="nav-item nav-link" href="pareigos_redaguoti.php">
+                    Redaguoti esamą pareigą
+                </a>
             </div>
         </div>
     </nav>

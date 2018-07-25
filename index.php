@@ -1,21 +1,25 @@
- <?php
-require 'funkcijos.php';
+<?php
+include 'funkcijos.php';
 head('Darbuotojai pagal pareigas'); 
 menu();
+
 $servername = "localhost";
 $username = "root";
 $password = "";
 $database = "projektas1";
 
-// Create connection
 $connection = mysqli_connect($servername, $username, $password, $database);
-//mysqli_ser_charset($connection, 'UTF8');
 mysqli_set_charset($connection, "utf8");
-// Check connection
 if (!$connection) {
     die("Connection failed: " . mysqli_connect_error());
 }
-
+//if (isset($_POST['delete']) && isset($_POST['id'])) {
+//    $id = mysqli_real_escape_string($connection, $_POST['id']);
+//    //$id = $_POST['id'];
+//    $query = "DELETE FROM pareigos WHERE id = '$id'";
+//    var_dump($query);die;
+//    $result = mysqli_query($connection, $query);
+//}
 $query = "SELECT * FROM darbuotojai";
 $result = mysqli_query($connection, $query);
 
@@ -36,29 +40,49 @@ if (mysqli_num_rows($result) > 0) {
 }
 
 mysqli_close($connection);
-
+?>
+<h2>Darbuotojų sąrašas:</h2>
+<?php
 if(count($darbuotojai) == 0) {
     echo 'Tokiu darbuotoju nera';
 } else {
-    echo '<ol>';
     foreach ($darbuotojai as $darbuotojas) {
-        ?>
-        <li>
-            Darbuotojas:
-            <a href="darbuotojas.php?id=<?php echo $darbuotojas['id']; ?>">
-                <?php echo $darbuotojas['name'] . ' ' . $darbuotojas['surname']; ?>
-            </a>
-            <?php if (!empty($darbuotojas['pareigos'])) { ?>
-                pareigos -
-                <a href="pareigos.php?id=<?php echo $darbuotojas['pareigos']['id']; ?>">
-                    <?php echo $darbuotojas['pareigos']['name']; ?>
-                </a>                
-                gaunantis bazine alga: <?php echo $darbuotojas['pareigos']['base_salary']; ?> Eur
-            <?php } ?>
-        </li>
-        <?php
-    }
-    echo '</ol>';
+?>
+<div class="col-md-12">    
+    <h1>Darbuotojai pagal pareigas: <b><?php echo $darbuotojas['pareigos']['name']; ?></b></h1>
+</div>
+<div class="col-md-12">    
+        <table class="table">
+        <tr>
+            <th></th>
+            <th>Vardas</th>
+            <th>Pavardė</th>
+            <th>Tel. nr.</th>
+            <th>Išsilavinimas</th>
+            <th>Alga, Eur</th>
+            <th></th>
+        </tr>        
+         <tr>
+            <td><strong><?php echo $darbuotojas['id'];?></strong></td>
+            <td><?php echo $darbuotojas['name'];?></td>
+            <td><?php echo $darbuotojas['surname'];?></td>
+            <td><?php echo $darbuotojas['phone'];?></td>
+            <td><?php echo $darbuotojas['education'];?></td>
+            <td><?php echo round($darbuotojas['salary'] / 100, 2); ?></td>
+            <td><a href="darbuotojas.php?id=<?php echo $darbuotojas['id'];?>" class="btn btn-primary">Plačiau</a></td>
+            <td><a href="darbuotojas_redaguoti.php?id="<?php echo $darbuotojas['id']; ?> class="btn btn-warning">Redaguoti</a></td>
+            <td><form method="post">
+            <input type="hidden" name="id" value="<?php echo $darbuotojas['id']; ?>">
+            <input type="submit" class="btn btn-danger" value="Trinti" name="delete">
+                </form>
+            </td>
+        </tr>            
+        </table>  
+</div>
+
+<?php 
 }
+}
+require 'darbuotojuPareigos.php';
 footer();
 ?>
