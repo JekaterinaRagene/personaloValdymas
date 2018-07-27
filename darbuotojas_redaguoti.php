@@ -1,6 +1,6 @@
 <?php
 require 'funkcijos.php';
-head('Esamo darbuotojo redagavimas'); 
+head('Darbuotojo redagavimas'); 
 menu();
 $servername = "localhost";
 $username = "root";
@@ -8,6 +8,7 @@ $password = "";
 $database = "projektas1";
 
 // Create connection
+
 $connection = mysqli_connect($servername, $username, $password, $database);
 //mysqli_ser_charset($connection, 'UTF8');
 mysqli_set_charset($connection, "utf8");
@@ -41,7 +42,9 @@ if (isset($_GET['id'])) {
     echo 'Klaidos pranesimas';
     exit;
 }
-?>
+
+head('Redaguoti'); ?>
+
 <div class="col-md-12">
     <h2>Darbuotojo redagavimas</h2>
     <form action="" method="post">

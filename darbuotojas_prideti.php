@@ -1,6 +1,6 @@
 <?php
 require 'funkcijos.php';
-head('Įmonės statistika'); 
+head('Pridėti darbuotoja'); 
 menu();
 $servername = "localhost";
 $username = "root";
@@ -15,15 +15,13 @@ mysqli_set_charset($connection, "utf8");
 if (!$connection) {
     die("Connection failed: " . mysqli_connect_error());
 } 
-
+$birthday = 0;
 if (isset($_POST['name']) && isset($_POST['surname']) && isset($_POST['phone']) 
         && isset($_POST['education']) && isset($_POST['salary'])) {
-    $id = mysqli_real_escape_string($connection, $_POST['id']);
     $name = mysqli_real_escape_string($connection, $_POST['name']);
     $surname = mysqli_real_escape_string($connection, $_POST['surname']);
     $gender = mysqli_real_escape_string($connection, $_POST['gender']);
     $phone = mysqli_real_escape_string($connection, $_POST['phone']);
-    $birthday = mysqli_real_escape_string($connection, $_POST['birthday']);
     $education = mysqli_real_escape_string($connection, $_POST['education']);
     $salary = mysqli_real_escape_string($connection, $_POST['salary']);
     $pareigos = mysqli_real_escape_string($connection, $_POST['pareigu_id']);
@@ -66,23 +64,17 @@ if (isset($_POST['name']) && isset($_POST['surname']) && isset($_POST['phone'])
                 <label for="tel">Telefonas</label> 
                 <input name="phone" type="text" class="form-control" id="tel" placeholder="Telefonas">
             </div>
-            <div class="input-append date form_datetime">
-            <label for="birthday">Gimtadienis</label>
-            <input size="16" type="text" value="" readonly>
-            <span class="add-on"><i class="icon-th"></i></span>
-            </div>     
-            <script name="birthday" type="text/javascript" class="form-control" id="birthday" placeholder="Gimtadienis">>
-            $(".form_datetime").datetimepicker({
-            format: "dd MM yyyy - hh:ii"
-            });
-            </script>            
+            <div class="form-group">
+                <label for="birthday">Gimtadienis</label> 
+                <input name="birthday" type="date" class="form-control" id="birthday">
+            </div>            
            <div class="form-group">
                 <label for="tel">Išsilavinimas</label> 
                 <input name="education" type="text" class="form-control" id="education" placeholder="Išsilavinimas">
             </div>
             <div class="form-group">
                 <label for="issilavinimas">Atlyginimas</label>
-                <input name="salary" type="text" class="form-control" id="salary" placeholder="Išsilavinimas">
+                <input name="salary" type="text" class="form-control" id="salary" placeholder="Atlyginimas">
             </div>
         </div>
         <div class="col-md-6">        

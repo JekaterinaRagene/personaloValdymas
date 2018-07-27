@@ -1,6 +1,6 @@
 <?php
 require 'funkcijos.php';
-head('Pridėti pareigą'); 
+head('Pridėti pareiga'); 
 menu();
 $servername = "localhost";
 $username = "root";
@@ -26,7 +26,6 @@ if (isset($_POST['pavadinimas']) && isset($_POST['bazineAlga'])) {
     
     if (!$result) {
         echo "Klaida";
-        die;
     }
 }
 ?>

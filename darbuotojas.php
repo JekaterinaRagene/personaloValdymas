@@ -1,6 +1,6 @@
 <?php
 require 'funkcijos.php';
-head('Darbuotojai pagal pareigas'); 
+head('Darbuotojo informacija'); 
 menu();
 
 $servername = "localhost";

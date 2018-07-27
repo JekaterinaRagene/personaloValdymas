@@ -13,13 +13,12 @@ mysqli_set_charset($connection, "utf8");
 if (!$connection) {
     die("Connection failed: " . mysqli_connect_error());
 }
-//if (isset($_POST['delete']) && isset($_POST['id'])) {
-//    $id = mysqli_real_escape_string($connection, $_POST['id']);
-//    //$id = $_POST['id'];
-//    $query = "DELETE FROM pareigos WHERE id = '$id'";
-//    var_dump($query);die;
-//    $result = mysqli_query($connection, $query);
-//}
+if (isset($_POST['delete']) && isset($_POST['id'])) {
+    $id = mysqli_real_escape_string($connection, $_POST['id']);
+//    $id = $_POST['id'];
+    $query = "DELETE FROM pareigos WHERE id = '$id'";
+    $result2 = mysqli_query($connection, $query);
+}
 $query = "SELECT * FROM darbuotojai";
 $result = mysqli_query($connection, $query);
 
@@ -70,7 +69,7 @@ if(count($darbuotojai) == 0) {
             <td><?php echo $darbuotojas['education'];?></td>
             <td><?php echo round($darbuotojas['salary'] / 100, 2); ?></td>
             <td><a href="darbuotojas.php?id=<?php echo $darbuotojas['id'];?>" class="btn btn-primary">Plačiau</a></td>
-            <td><a href="darbuotojas_redaguoti.php?id="<?php echo $darbuotojas['id']; ?> class="btn btn-warning">Redaguoti</a></td>
+            <td><a href="darbuotojas_redaguoti.php?id=<?php echo $darbuotojas['id']; ?>" class="btn btn-warning">Redaguoti</a></td>
             <td><form method="post">
             <input type="hidden" name="id" value="<?php echo $darbuotojas['id']; ?>">
             <input type="submit" class="btn btn-danger" value="Trinti" name="delete">
@@ -83,6 +82,6 @@ if(count($darbuotojai) == 0) {
 <?php 
 }
 }
-require 'darbuotojuPareigos.php';
+require 'darbuotojai_pareigos.php';
 footer();
 ?>

@@ -18,10 +18,10 @@ if (!$connection) {
 
 if (isset($_POST['name']) && isset($_POST['base_salary'])) {
     $id = $_POST['id'];
-    $pareiga = $_POST['name'];
-    $baseSalary = $_POST['base_salary'];
+    $name = $_POST['name'];
+    $base_salary = $_POST['base_salary'];
     
-    $query = "UPDATE pareigos SET name = '$pareiga', base_salary = '$base_salary' WHERE id = $id";
+    $query = "UPDATE pareigos SET name = '$name', base_salary = '$base_salary' WHERE id = $id";
     $result = mysqli_query($connection, $query);
 }
 if (isset($_GET['id'])) {
@@ -35,7 +35,7 @@ if (isset($_GET['id'])) {
     exit;
 }
 ?>
-<div class="col-md-12">
+<div class="col-md-6">
     <h2>Pareigų redagavimas:</h2>
 
     <form action="" method="post">
@@ -53,6 +53,5 @@ if (isset($_GET['id'])) {
 </div>
 
 <?php footer(); ?>
-
 
 
