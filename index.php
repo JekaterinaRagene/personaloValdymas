@@ -15,8 +15,8 @@ if (!$connection) {
 }
 if (isset($_POST['delete']) && isset($_POST['id'])) {
     $id = mysqli_real_escape_string($connection, $_POST['id']);
-//    $id = $_POST['id'];
-    $query = "DELETE FROM pareigos WHERE id = '$id'";
+    $id = $_POST['id'];
+    $query = "DELETE FROM darbuotojai WHERE id = '$id'";
     $result2 = mysqli_query($connection, $query);
 }
 $query = "SELECT * FROM darbuotojai";
@@ -35,6 +35,9 @@ if (mysqli_num_rows($result) > 0) {
         $darbuotojas['pareigos'] = $pareigos;
         
         $darbuotojai[] = $darbuotojas;
+//        echo '<pre>';
+//        print_r($darbuotojas);
+//        echo '</pre>';
     }
 }
 
@@ -75,13 +78,15 @@ if(count($darbuotojai) == 0) {
             <input type="submit" class="btn btn-danger" value="Trinti" name="delete">
                 </form>
             </td>
+            <td><a href="priskirti_projekta.php?id=<?php echo $darbuotojas['id'];?>" class="btn btn-primary">Priskirti projekta</a></td>
         </tr>            
         </table>  
 </div>
 
-<?php 
+<?php
 }
 }
 require 'darbuotojai_pareigos.php';
+require 'projektai.php';
 footer();
 ?>

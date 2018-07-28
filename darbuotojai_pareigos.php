@@ -13,7 +13,7 @@ if (!$connection) {
     die("Connection failed: " . mysqli_connect_error());
 } 
 
-if (isset($_POST['delete']) && isset($_POST['id'])) {
+if (isset($_POST['istrintiPareigas']) && isset($_POST['id'])) {      
     $id = mysqli_real_escape_string($connection, $_POST['id']);
 //    $id = $_POST['id'];
     $query = "DELETE FROM pareigos WHERE id = '$id'";
@@ -48,30 +48,25 @@ if (isset($_POST['delete']) && isset($_POST['id'])) {
                 }
 
                 $pareigos[] = $pareiga;
-                ?>
+?>
         <tr>
             <td><?php echo $pareiga['name'] ?></td>
             <td><?php echo round($pareiga['base_salary'] /100, 2); ?> Eur</td>
-            <td><?php echo ($pareiga['darbuotojuSkaicius']) ?></td>
-           
+            <td><?php echo ($pareiga['darbuotojuSkaicius']) ?></td>          
             <td><a href="darbuotojas.php?id=<?php echo $darbuotojas['id']; ?>" class="btn btn-primary">Rodyti darbuotojus</a></td>
-            
             <td><a href="pareigos_redaguoti.php?id=<?php echo $pareiga['id'] ?>" class="btn btn-warning">Redaguoti</a></td>
             <td><form method="post">
-            <input type="hidden" name="id" value="<?php echo $pareiga['name'];?>">
-            <input type="submit" class="btn btn-danger" value="Trinti" name="delete">
+            <input type="hidden" name="id" value="<?php echo $pareiga['id'];?>">
+            <input type="submit" class="btn btn-danger" value="Trinti" name="istrintiPareigas">
                 </form>
             </td>
         </tr>
         
         <?php 
                 }
-        }
-                ?>
+            }
+        ?>
     </table>
 </div>
-<?php
-footer();
-?>
 
 
