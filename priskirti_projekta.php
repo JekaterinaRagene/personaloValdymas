@@ -17,106 +17,65 @@ if (!$connection) {
     die("Connection failed: " . mysqli_connect_error());
 } 
 
-
-if (isset($_POST['projekt'])) {
-    $id = mysqli_real_escape_string($connection, $_POST['projekto_id']);
-    $name = mysqli_real_escape_string($connection, $_POST['name']);
-    $surname = mysqli_real_escape_string($connection, $_POST['surname']);
-    $gender = mysqli_real_escape_string($connection, $_POST['gender']);
-    $phone = mysqli_real_escape_string($connection, $_POST['phone']);
-    $birthday = mysqli_real_escape_string($connection, $_POST['birthday']);
-    $education = mysqli_real_escape_string($connection, $_POST['education']);
-    $salary = mysqli_real_escape_string($connection, $_POST['salary']);
-    $pareigos = mysqli_real_escape_string($connection, $_POST['pareigu_id']);
-   
-$query = "UPDATE darbuotojai SET name = '$name', surname = '$surname, gender = '$gender',"
-         . " phone = '$phone', birthday = '$birthday', education = '$education', salary = '$salary', pareigu_id = '$paregos'  WHERE id = $id";
-$result = mysqli_query($connection, $query);
-}   
 if (isset($_GET['id'])) {
     $id = $_GET['id'];    
-    $query = "SELECT * FROM darbuotojai WHERE id = " . $id;
+    $query = "SELECT * FROM projects WHERE projekto_id = " . $id;
     $result = mysqli_query($connection, $query);
-    $darbuotojoInfo = mysqli_fetch_assoc($result);
-
+    $pareigosInfo = mysqli_fetch_assoc($result);
+    
 } else {
     echo 'Klaidos pranesimas';
     exit;
 }
 
-head('Redaguoti'); ?>
+$query = "SELECT * FROM darbuotojai LEFT JOIN darbuotojai_projektai ON darbuotojai . id = darbuotojai_projektai . darbuotojo_id ";
+$result = mysqli_query($connection, $query);
 
-<div class="col-md-12">
-    <h2>Darbuotojo redagavimas</h2>
+$darbuotojai = [];
+if (mysqli_num_rows($result) > 0) {
+    while ($darbuotojas = mysqli_fetch_assoc($result)) {        
+        $query = "SELECT * FROM projects WHERE projekto_id = " . $darbuotojas['projekto_id'];
+        $row = mysqli_query($connection, $query);
+        $priskirtiProjektai = mysqli_fetch_assoc($row);
+        
+        if (mysqli_num_rows($row) == 0) {
+            $priskirtiProjektai = [];
+        }        
+        $darbuotojas['priskirtiProjektai'] = $priskirtiProjektai;
+        
+        $darbuotojai[] = $darbuotojas;
+        echo '<pre>';
+        print_r($darbuotojas);
+        echo '</pre>';
+    }
+}
+
+
+?>
+<div class="col-md-6">
+    <h2>Projektu priskirimas</h2>
+
     <form action="" method="post">
-        <input name="id" type="hidden" value="<?php echo $darbuotojoInfo['id']; ?>">
-        <div class="col-md-6">
-            <div class="form-group">
-                <label for="vardas">Vardas</label> 
-                <input name="name" type="text" class="form-control" value="<?php echo $darbuotojoInfo['name']; ?>">
-            </div>
-            <div class="form-group">
-                <label for="pavarde">Pavardė</label> 
-                <input name="surname" type="text" class="form-control" value="<?php echo $darbuotojoInfo['surname']; ?>">
-            </div>
-            <div class="form-group">
-                <label for="lytis">Lytis</label> 
-                <select name="gender" id="lytis" class="form-control">
-                        <option>Vyras</option>
-                        <option>Moteris</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="tel">Telefonas</label> 
-                <input name="phone" type="text" class="form-control" value="<?php echo $darbuotojoInfo['phone']; ?>">
-            </div>
-            <div class="form-group">
-                <label for="birthday">Gimtadienis</label> 
-                <input name="birthday" type="date" class="form-control" value="<?php echo $darbuotojoInfo['birthday']; ?>">
-            </div>
-            <div class="form-group">
-                <label for="tel">Išsilavinimas</label> 
-                <input name="education" type="text" class="form-control" value="<?php echo $darbuotojoInfo['education']; ?>">
-            </div>
-            <div class="form-group">
-                <label for="tel">Atlyginimas</label> 
-                <input name="salary" type="text" class="form-control" value="<?php echo $darbuotojoInfo['salary']; ?>">
-            </div>
-        </div>
+        <input name="id" type="hidden" value="<?php echo $pareigosInfo['id']; ?>">                
+         <?php
+         if (count($darbuotojai) == 0) {
+            echo 'Projektu nera priskirta';
+        } else {
+            foreach ($darbuotojai as $darbuotojas) {
+        ?>
         <div class="form-group">
-            <label for="pareigos">Pareigos</label> 
-            <select name="pareigu_id" id="pareigos" class="form-control">
-            <?php        
-            $query = "SELECT * FROM pareigos";
-            $result = mysqli_query($connection, $query);
-            $pareigos = [];
-            if (mysqli_num_rows($result) > 0) {
-                while ($pareiga = mysqli_fetch_assoc($result)) {
-                $query = "SELECT COUNT(*) FROM darbuotojai WHERE pareigu_id = " . $pareiga['id'];
-                $result2 = mysqli_query($connection, $query);
-                if (mysqli_num_rows($result2) == 0) {
-                    $pareiga['darbuotojuSkaicius'] = 0;
-                } else {                    
-                    $darbuotojuSkaicius = mysqli_fetch_row($result2);
-                    $pareiga['darbuotojuSkaicius'] = $darbuotojuSkaicius[0];
-                }
-                $pareigos[] = $pareiga;
-                ?>
-                <option><?php echo $pareiga['name'] ?></option>
-               <?php 
-                }
-            }
-            ?> 
+            <label for="sel1">Projektai</label>
+            <select class="form-control" id="sel1">
+              <option><?php echo $darbuotojas['priskirtiProjektai']['name']; ?></option>              
             </select>
+          </div> 
+        <?php }} ?>   
         </div>
-        <div class="clearfix"></div>
-        <div class="col-md-12">
-            <input type="submit" class="btn btn-primary" value="Redaguoti">
-        </div>
+        <input type="submit" class="btn btn-primary" value="Išsaugoti">
     </form>
 </div>
-        
-<?php 
+<?php
+
 mysqli_close($connection);
 footer();
 ?>
